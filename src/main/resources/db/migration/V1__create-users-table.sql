@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS `users` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT ,
+    `nome` VARCHAR(100) NOT NULL,
+    `email` VARCHAR(150) NOT NULL,
+    `senha` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+    ENGINE = InnoDB;
