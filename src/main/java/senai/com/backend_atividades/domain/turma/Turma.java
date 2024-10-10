@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import senai.com.backend_atividades.domain.aluno.Aluno;
+
 
 import java.util.List;
 
@@ -21,7 +21,6 @@ public class Turma {
     private Long id;
     private String nome;
 
-    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Aluno> alunos;
+
 
 }

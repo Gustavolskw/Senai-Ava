@@ -16,6 +16,7 @@ public class PingController {
     @GetMapping
     public ResponseEntity<String> ping() {
         try{
+            System.out.println("PING PONG");
             return ResponseEntity.ok("Pong");
         }catch (Exception e){
             return ResponseEntity.status(400).body(e.getMessage());

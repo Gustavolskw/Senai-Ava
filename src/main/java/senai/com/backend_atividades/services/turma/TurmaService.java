@@ -45,10 +45,10 @@ public class TurmaService implements ITurmaService {
     }
 
     @Override
-    public TurmaComAlunosDTO getTurmaById(Long turmaId) {
+    public TurmaResponseDTO getTurmaById(Long turmaId) {
         return Optional.of(turmaId)
                 .filter(turma -> turmaRepository.existsById(turmaId))
-                .map(turma -> new TurmaComAlunosDTO(turmaRepository.getReferenceById(turmaId)))
+                .map(turma -> new TurmaResponseDTO(turmaRepository.getReferenceById(turmaId)))
                 .orElseThrow(() -> new NotFoundException("Turma não econtrada pelo id:"+turmaId+"!"));
     }
 

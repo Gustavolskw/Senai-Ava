@@ -9,7 +9,7 @@ public interface ITurmaService {
 
     TurmaResponseDTO createTurma(TurmaRegisterDTO turmaRegisterDTO);
     List<TurmaResponseDTO> getTurmas();
-    TurmaComAlunosDTO getTurmaById(Long turmaId);
+    TurmaResponseDTO getTurmaById(Long turmaId);
     TurmaResponseDTO updateTurma(String nome, Long turmaId);
     void deleteTurma(Long turmaId);
 }
