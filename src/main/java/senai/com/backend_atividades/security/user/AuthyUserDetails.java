@@ -26,16 +26,19 @@ public class AuthyUserDetails implements UserDetails {
     private Collection<GrantedAuthority> authorities;
 
     public static AuthyUserDetails buildUserDetails(User user) {
-        List<GrantedAuthority> authorities = user.getRoles()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
 
-        return new AuthyUserDetails(
-                user.getId(),
-                user.getEmail(),
-                user.getSenha(),
-                authorities);
+//todo rever
+//        List<GrantedAuthority> authorities = user.getRole()
+//                .stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getName()))
+//                .collect(Collectors.toList());
+//
+//        return new AuthyUserDetails(
+//                user.getId(),
+//                user.getEmail(),
+//                user.getSenha(),
+//                authorities);
+        return null;
     }
 
     @Override
