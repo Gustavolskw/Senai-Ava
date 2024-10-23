@@ -19,32 +19,49 @@ import senai.com.backend_atividades.security.user.AuthyUserDetailsService;
 import java.io.IOException;
 
 public class AuthTokenFilter  extends OncePerRequestFilter {
+
     @Autowired
     private JwtUtils jwtUtils;
+
     @Autowired
-   private AuthyUserDetailsService userDetailsService;
+    private AuthyUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
+
             String jwt = parseJwt(request);
+
             if (StringUtils.hasText(jwt) && jwtUtils.validateToken(jwt)) {
+
                 String username = jwtUtils.getUsernameFromToken(jwt);
+
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
             }
+
         } catch (JwtException e) {
+
             setErrorResponse(HttpServletResponse.SC_UNAUTHORIZED, response, e.getMessage(), "Token inválido ou expirado. Faça login e tente novamente.");
+
             return;
+
         } catch (Exception e) {
+
             setErrorResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response, e.getMessage(), "Erro interno no servidor.");
+
             return;
+
         }
+
         filterChain.doFilter(request, response);
+
     }
 
     private String parseJwt(HttpServletRequest request) {
