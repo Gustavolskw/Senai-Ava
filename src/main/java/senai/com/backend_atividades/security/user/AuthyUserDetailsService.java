@@ -15,11 +15,15 @@ import java.util.Optional;
 public class AuthyUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
         User user = Optional.ofNullable(userRepository.findByEmail(email))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+
         return AuthyUserDetails.buildUserDetails(user);
+
     }
 
 

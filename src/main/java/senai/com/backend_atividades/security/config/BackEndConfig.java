@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -69,10 +70,14 @@ public class BackEndConfig {
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
-        var authProvider = new DaoAuthenticationProvider();
+
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
+
         return authProvider;
+
     }
 
     @Bean
@@ -81,16 +86,20 @@ public class BackEndConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->auth
-//                        .requestMatchers(HttpMethod.POST, SECURED_URLS.toArray(String[]::new)).authenticated()
-//                        .requestMatchers(HttpMethod.DELETE, SECURED_URLS.toArray(String[]::new)).authenticated()
-//                        .requestMatchers(HttpMethod.PUT, SECURED_URLS.toArray(String[]::new)).authenticated()
-//                        .requestMatchers(HttpMethod.GET, SECURED_GET_URLS.toArray(String[]::new)).authenticated()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, SECURED_URLS.toArray(String[]::new)).authenticated()
+                        .requestMatchers(HttpMethod.DELETE, SECURED_URLS.toArray(String[]::new)).authenticated()
+                        .requestMatchers(HttpMethod.PUT, SECURED_URLS.toArray(String[]::new)).authenticated()
+                        .requestMatchers(HttpMethod.GET, SECURED_GET_URLS.toArray(String[]::new)).authenticated()
                         .anyRequest().permitAll()
                 );
+
         http.authenticationProvider(daoAuthenticationProvider());
+
         http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
 
     }
+
 }

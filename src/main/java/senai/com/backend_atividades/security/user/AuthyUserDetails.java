@@ -11,7 +11,6 @@ import senai.com.backend_atividades.domain.user.User;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -22,20 +21,18 @@ public class AuthyUserDetails implements UserDetails {
     private Long id;
     private String email;
     private String senha;
-
-    private Collection<GrantedAuthority> authorities;
+    private List<GrantedAuthority> authorities;
 
     public static AuthyUserDetails buildUserDetails(User user) {
-        List<GrantedAuthority> authorities = user.getRoles()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
+
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().getName()));
 
         return new AuthyUserDetails(
                 user.getId(),
                 user.getEmail(),
-                user.getSenha(),
+                user.getPassword(),
                 authorities);
+
     }
 
     @Override

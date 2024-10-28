@@ -24,24 +24,32 @@ import senai.com.backend_atividades.security.user.AuthyUserDetails;
 @RequestMapping("${api.prefix}/auth")
 public class AuthController {
 
-
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody UserLogin request) {
+
         try {
+
             Authentication authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(
-                            request.email(), request.senha()));
+                            request.email(), request.password()));
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
             String jwt = jwtUtils.generateTokenForUser(authentication);
+
             AuthyUserDetails userDetails = (AuthyUserDetails) authentication.getPrincipal();
+
             JwtResponse jwtResponse = new JwtResponse(userDetails.getId(), jwt);
+
             return ResponseEntity.ok(new ApiResponse("Login Successful", jwtResponse));
+
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(e.getMessage(), null));
         }
 
     }
+
 }

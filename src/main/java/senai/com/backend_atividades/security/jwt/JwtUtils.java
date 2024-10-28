@@ -23,21 +23,19 @@ public class JwtUtils {
     private int expirationTime;
 
     public String generateTokenForUser(Authentication authentication) {
-        AuthyUserDetails userPrincipal = (AuthyUserDetails) authentication.getPrincipal();
 
-        List<String> roles = userPrincipal.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority).toList();
+        AuthyUserDetails userPrincipal = (AuthyUserDetails) authentication.getPrincipal();
 
         return Jwts.builder()
                 .setSubject(userPrincipal.getEmail())
                 .claim("id", userPrincipal.getId())
-                .claim("roles", roles)
+                .claim("role", userPrincipal.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() +expirationTime))
                 .signWith(key(), SignatureAlgorithm.HS256).compact();
 
     }
+
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
@@ -51,16 +49,21 @@ public class JwtUtils {
     }
 
     public  boolean validateToken(String token) {
+
         try {
+
             Jwts.parserBuilder()
                     .setSigningKey(key())
                     .build()
                     .parseClaimsJws(token);
+
             return true;
+
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException |
                  IllegalArgumentException e) {
             throw new JwtException(e.getMessage());
-
         }
+
     }
+
 }

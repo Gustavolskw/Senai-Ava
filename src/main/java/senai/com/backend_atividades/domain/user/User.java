@@ -20,22 +20,35 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+
+    @Column(name = "name")
+    private String name;
+
     @Email
     private String email;
-    private String senha;
 
-//    @OneToMany(mappedBy = "avaliador", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Entrega> entregas;
+    @Column(name = "password")
+    private String password;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id", updatable = false, insertable = false, foreignKey = @ForeignKey(name = "fk_user_role"))
+    private Role role;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade =
-            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "user_has_role",  joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-    )
-    private Collection<Role> roles = new HashSet<>();
+    @Column(name = "role_id")
+    private Long roleId;
+
+    @PrePersist
+    @PreUpdate
+    private void prePersist() {
+
+        if (this.getRole() != null) {
+            this.roleId = this.role.getId();
+        }
+
+    }
+
 }

@@ -53,8 +53,9 @@ public class UserService implements IUserService  {
                 .map(req -> {
                     User user = new User();
                     user.setEmail(request.email());
-                    user.setNome(request.nome());
-                    user.setSenha(passwordEncoder.encode(request.senha()));
+                    user.setName(request.name());
+                    user.setPassword(passwordEncoder.encode(request.password()));
+                    user.setRole(rolesRepository.findByName("USER").get());
                     userRepository.save(user);
                     return new UserResponseData(user);
                 }).orElseThrow(() -> new UserAlreadyExistsException("Oops!" +request.email() +" already exists!"));
@@ -68,9 +69,9 @@ public class UserService implements IUserService  {
                 .map(req -> {
                     User user = new User();
                     user.setEmail(adminRegister.email());
-                    user.setNome(adminRegister.nome());
-                    user.setSenha(passwordEncoder.encode(adminRegister.senha()));
-                    user.setRoles(Set.of(adminRole));
+                    user.setName(adminRegister.name());
+                    user.setPassword(passwordEncoder.encode(adminRegister.password()));
+                    user.setRole(adminRole);
                     userRepository.save(user);
                     return  new UserResponseData(user);
                 }).orElseThrow(() -> new UserAlreadyExistsException("Oops!" +adminRegister.email() +" already exists!"));
