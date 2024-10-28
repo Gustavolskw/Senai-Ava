@@ -34,7 +34,7 @@ public class AuthController {
 
             Authentication authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(
-                            request.email(), request.senha()));
+                            request.email(), request.password()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 

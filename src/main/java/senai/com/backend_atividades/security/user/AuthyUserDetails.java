@@ -11,7 +11,6 @@ import senai.com.backend_atividades.domain.user.User;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

@@ -39,6 +39,16 @@ public class User {
     private Role role;
 
     @Column(name = "role_id")
-    private String roleId;
+    private Long roleId;
+
+    @PrePersist
+    @PreUpdate
+    private void prePersist() {
+
+        if (this.getRole() != null) {
+            this.roleId = this.role.getId();
+        }
+
+    }
 
 }
