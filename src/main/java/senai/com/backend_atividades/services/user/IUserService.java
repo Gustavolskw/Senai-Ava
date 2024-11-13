@@ -1,5 +1,6 @@
 package senai.com.backend_atividades.services.user;
 
+import org.springframework.web.multipart.MultipartFile;
 import senai.com.backend_atividades.domain.Role.Role;
 import senai.com.backend_atividades.domain.user.User;
 import senai.com.backend_atividades.domain.user.UserRegisterDTO;
@@ -14,7 +15,7 @@ public interface IUserService {
 
     List<UserResponseData> getAllUsers();
 
-    UserResponseData createUser(UserRegisterDTO user, Role role);
+    UserResponseData createUser(UserRegisterDTO user, Role role, MultipartFile image);
 
     UserResponseData updateUser(User user, Long id);
 

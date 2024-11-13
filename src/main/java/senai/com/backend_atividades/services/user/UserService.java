@@ -5,10 +5,11 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import senai.com.backend_atividades.domain.Role.Role;
 import senai.com.backend_atividades.domain.user.User;
 import senai.com.backend_atividades.domain.user.UserRegisterDTO;
-import senai.com.backend_atividades.domain.user.UserRegisterData;
+import org.apache.commons.io.FilenameUtils;
 import senai.com.backend_atividades.domain.user.UserResponseData;
 import senai.com.backend_atividades.exception.NullListException;
 
@@ -17,6 +18,9 @@ import senai.com.backend_atividades.exception.UserNotFoundException;
 import senai.com.backend_atividades.repository.RolesRepository;
 import senai.com.backend_atividades.repository.UserRepository;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -47,25 +51,57 @@ public class UserService implements IUserService  {
     }
 
     @Override
-    public UserResponseData createUser(UserRegisterDTO request, Role role) {
+    public UserResponseData createUser(UserRegisterDTO request, Role role, MultipartFile image) {
 
         return Optional.of(request)
                 .filter(user -> !userRepository.existsByEmail(request.email()))
                 .map(req -> {
 
-                    User user = new User();
-
-                    user.setEmail(request.email());
-                    user.setName(request.name());
-                    user.setPassword(passwordEncoder.encode(request.password()));
-                    user.setRole(role);
+                    User user = buildUser(request, role);
 
                     userRepository.save(user);
+
+                    saveImage(image, user);
 
                     return new UserResponseData(user);
 
                 })
                 .orElseThrow(() -> new UserAlreadyExistsException("Oops! User already exists!"));
+
+    }
+
+    public void saveImage(MultipartFile image, User user) {
+
+        try {
+
+            String uniqueFileName = String.valueOf(user.getId()) + "." + FilenameUtils.getExtension(image.getOriginalFilename());
+
+            Path uploadPath = Path.of("src/main/resources/img/");
+
+            Path filePath = uploadPath.resolve(uniqueFileName);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+    }
+
+    private User buildUser(UserRegisterDTO request, Role role) {
+
+        User user = new User();
+
+        user.setEmail(request.email());
+        user.setName(request.name());
+        user.setPassword(passwordEncoder.encode(request.password()));
+        user.setRole(role);
+
+        return user;
 
     }
 

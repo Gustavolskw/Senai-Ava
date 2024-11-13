@@ -1,10 +1,13 @@
 package senai.com.backend_atividades.controller;
 
+import com.google.gson.Gson;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import senai.com.backend_atividades.domain.Role.Role;
 import senai.com.backend_atividades.domain.Role.Roles;
 import senai.com.backend_atividades.domain.user.UserRegisterDTO;
 import senai.com.backend_atividades.domain.user.UserResponseData;
@@ -39,11 +42,17 @@ public class UserController {
 
     @Secured({"ADMIN", "TEACHER"})
     @PostMapping("add/{role}")
-    public ResponseEntity<ApiResponse> addUser(@Valid @RequestBody UserRegisterDTO user, @PathVariable("role") Roles role) {
+    public ResponseEntity<ApiResponse> addUser(@PathVariable("role") Roles role,
+                                               @Valid @RequestParam String user,
+                                               @RequestParam("image") MultipartFile image) {
 
         try {
 
-            iUserService.createUser(user, rolesRepository.findById(role.getValue()).get());
+            UserRegisterDTO userRegisterDTO = new Gson().fromJson(user, UserRegisterDTO.class);
+
+            Role roleEntity = rolesRepository.findById(role.getValue()).get();
+
+            iUserService.createUser(userRegisterDTO, roleEntity, image);
 
             return ResponseEntity.ok().body(new ApiResponse(role.getDescription() + " Registrado com sucesso!", null));
 
