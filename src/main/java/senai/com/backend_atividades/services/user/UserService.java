@@ -47,34 +47,26 @@ public class UserService implements IUserService  {
     }
 
     @Override
-    public UserResponseData createUser(UserRegisterDTO request) {
+    public UserResponseData createUser(UserRegisterDTO request, Role role) {
+
         return Optional.of(request)
                 .filter(user -> !userRepository.existsByEmail(request.email()))
                 .map(req -> {
+
                     User user = new User();
+
                     user.setEmail(request.email());
                     user.setName(request.name());
                     user.setPassword(passwordEncoder.encode(request.password()));
-                    user.setRole(rolesRepository.findByName("USER").get());
-                    userRepository.save(user);
-                    return new UserResponseData(user);
-                }).orElseThrow(() -> new UserAlreadyExistsException("Oops!" +request.email() +" already exists!"));
-    }
+                    user.setRole(role);
 
-    @Override
-    public UserResponseData createAdmin(UserRegisterDTO adminRegister) {
-        Role adminRole = rolesRepository.findByName("ADMIN").get();
-        return Optional.of(adminRegister)
-                .filter(user -> !userRepository.existsByEmail(adminRegister.email()))
-                .map(req -> {
-                    User user = new User();
-                    user.setEmail(adminRegister.email());
-                    user.setName(adminRegister.name());
-                    user.setPassword(passwordEncoder.encode(adminRegister.password()));
-                    user.setRole(adminRole);
                     userRepository.save(user);
-                    return  new UserResponseData(user);
-                }).orElseThrow(() -> new UserAlreadyExistsException("Oops!" +adminRegister.email() +" already exists!"));
+
+                    return new UserResponseData(user);
+
+                })
+                .orElseThrow(() -> new UserAlreadyExistsException("Oops! User already exists!"));
+
     }
 
     @Override

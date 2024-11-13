@@ -38,6 +38,7 @@ public class BackEndConfig {
                     "/api/v1/img/download",
                     "/api/v1/aluno/**",
                     "/api/v1/user/edit/**",
+                    "/api/v1/user/add/**",
                     "/api/v1/user/delete/**",
                     "/api/v1/entregas/**");
 
