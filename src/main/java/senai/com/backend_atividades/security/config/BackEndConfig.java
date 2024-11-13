@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(securedEnabled = true)
 public class BackEndConfig {
 
     private final AuthyUserDetailsService userDetailsService;
