@@ -23,9 +23,7 @@ public class TurmaController {
     private final TurmaService turmaService;
 
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/add")
-    @Transactional
     public ResponseEntity<ApiResponse> adicionaTurma(@RequestBody @Valid TurmaRegisterDTO turma) {
         try {
             TurmaResponseDTO newTurma = turmaService.createTurma(turma);
@@ -35,7 +33,6 @@ public class TurmaController {
         }
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllTurmas(){
         try{
@@ -47,7 +44,6 @@ public class TurmaController {
     }
 
     @PutMapping("/{turmaId}/edit")
-    @Transactional
     public ResponseEntity<ApiResponse> editTurma(@PathVariable Long turmaId, @RequestBody @Valid TurmaRegisterDTO turma) {
         try{
             TurmaResponseDTO updatedTurma = turmaService.updateTurma(turma.nome(), turmaId);
@@ -59,7 +55,6 @@ public class TurmaController {
     }
 
     @DeleteMapping("/delete/{turmaId}")
-    @Transactional
     public ResponseEntity<ApiResponse> deleteTurma(@PathVariable Long turmaId) {
         try{
             turmaService.deleteTurma(turmaId);

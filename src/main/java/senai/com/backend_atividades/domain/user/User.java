@@ -41,6 +41,12 @@ public class User {
     @Column(name = "role_id")
     private Long roleId;
 
+    @Column(name = "cpf")
+    private String cpf;
+
+    @Column(name = "name_image")
+    private String nameImage;
+
     @PrePersist
     @PreUpdate
     private void prePersist() {

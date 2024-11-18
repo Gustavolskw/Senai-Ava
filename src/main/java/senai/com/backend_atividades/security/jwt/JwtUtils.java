@@ -12,7 +12,7 @@ import senai.com.backend_atividades.security.user.AuthyUserDetails;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
@@ -29,9 +29,11 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject(userPrincipal.getEmail())
                 .claim("id", userPrincipal.getId())
-                .claim("role", userPrincipal.getAuthorities())
+                .claim("role", userPrincipal.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.joining("")))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() +expirationTime))
+                .setExpiration(new Date((new Date()).getTime() + expirationTime))
                 .signWith(key(), SignatureAlgorithm.HS256).compact();
 
     }
@@ -48,7 +50,7 @@ public class JwtUtils {
                 .getBody().getSubject();
     }
 
-    public  boolean validateToken(String token) {
+    public boolean validateToken(String token) {
 
         try {
 

@@ -10,5 +10,9 @@ public record UserRegisterDTO(
         @Email(message = "Email deve ser Válido!")
         String email,
         @NotBlank(message = "Senha deve ser preenchido!")
-        String password) {
+        String password,
+        String cpf,
+        Long roleId,
+        String nameImage
+        ) {
 }
