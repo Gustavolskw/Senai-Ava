@@ -2,17 +2,15 @@ package senai.com.backend_atividades.services.user;
 
 
 import lombok.RequiredArgsConstructor;
-
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import senai.com.backend_atividades.domain.Role.Role;
 import senai.com.backend_atividades.domain.user.User;
 import senai.com.backend_atividades.domain.user.UserRegisterDTO;
-import org.apache.commons.io.FilenameUtils;
 import senai.com.backend_atividades.domain.user.UserResponseData;
 import senai.com.backend_atividades.exception.NullListException;
-
 import senai.com.backend_atividades.exception.UserAlreadyExistsException;
 import senai.com.backend_atividades.exception.UserNotFoundException;
 import senai.com.backend_atividades.repository.RolesRepository;
@@ -23,7 +21,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor

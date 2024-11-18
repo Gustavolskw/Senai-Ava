@@ -41,6 +41,7 @@ public class UserController {
     }
 
     @Secured({"ADMIN", "TEACHER"})
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("add/{role}")
     public ResponseEntity<ApiResponse> addUser(@PathVariable("role") Roles role,
                                                @Valid @RequestParam String user,
