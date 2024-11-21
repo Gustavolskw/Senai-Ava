@@ -15,7 +15,7 @@ public interface IUserService {
 
     List<UserResponseData> getAllUsers();
 
-    UserResponseData createUser(UserRegisterDTO user, Role role, MultipartFile image);
+    UserResponseData createUser(UserRegisterDTO user);
 
     UserResponseData updateUser(User user, Long id);
 
