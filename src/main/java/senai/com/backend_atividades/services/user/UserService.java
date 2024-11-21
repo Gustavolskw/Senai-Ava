@@ -48,17 +48,17 @@ public class UserService implements IUserService  {
     }
 
     @Override
-    public UserResponseData createUser(UserRegisterDTO request, Role role, MultipartFile image) {
+    public UserResponseData createUser(UserRegisterDTO request) {
 
         return Optional.of(request)
                 .filter(user -> !userRepository.existsByEmail(request.email()))
                 .map(req -> {
 
-                    User user = buildUser(request, role);
+                    User user = buildUser(request, request.role());
 
                     userRepository.save(user);
 
-                    saveImage(image, user);
+                    saveImage(request.image(), user);
 
                     return new UserResponseData(user);
 

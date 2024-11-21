@@ -48,11 +48,11 @@ public class UserController {
 
         try {
 
-            UserRegisterDTO userRegisterDTO = new Gson().fromJson(user, UserRegisterDTO.class);
+            UserRegisterDTO userRegisterDTO = new UserRegisterDTO(new Gson().fromJson(user, UserRegisterDTO.class),
+                    rolesRepository.findById(role.getValue()).get(),
+                    image);
 
-            Role roleEntity = rolesRepository.findById(role.getValue()).get();
-
-            iUserService.createUser(userRegisterDTO, roleEntity, image);
+            iUserService.createUser(userRegisterDTO);
 
             return ResponseEntity.ok().body(new ApiResponse(role.getDescription() + " Registrado com sucesso!", null));
 

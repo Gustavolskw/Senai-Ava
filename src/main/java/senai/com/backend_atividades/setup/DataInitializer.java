@@ -28,7 +28,7 @@ public class DataInitializer implements CommandLineRunner {
 
             UserRegisterDTO userRegister = buildDefaultAdmin();
 
-            iUserService.createUser(userRegister, (Role) rolesRepository.findById(Long.valueOf(1)).get(), null);
+            iUserService.createUser(userRegister);
 
         } catch (Exception e) {}
 
@@ -36,8 +36,13 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private UserRegisterDTO buildDefaultAdmin() {
-        return new UserRegisterDTO("admin", "admin@gmail.com", "admin@65468*/62.98+/*52989856*//*/"
-                , "00000000000", Long.valueOf(1), null);
+        return new UserRegisterDTO("admin",
+                "admin@gmail.com",
+                "admin@65468*/62.98+/*52989856*//*/",
+                "00000000000",
+                null,
+                rolesRepository.findById(Long.valueOf(1)).get(),
+                null);
     }
 
 }
