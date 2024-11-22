@@ -1,10 +1,10 @@
 package senai.com.backend_atividades.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import senai.com.backend_atividades.domain.turma.Turma;
+import senai.com.backend_atividades.domain.turma.Class;
 
-public interface TurmaRepository  extends JpaRepository<Turma, Long> {
-    boolean existsByNome(String turmaNome);
+public interface TurmaRepository  extends JpaRepository<Class, Long> {
+    boolean existsByName(String turmaNome);
 
-    boolean existsByNomeLikeAndIdNot(String nome, Long turmaId);
+    boolean existsByNameLikeAndIdNot(String nome, Long turmaId);
 }

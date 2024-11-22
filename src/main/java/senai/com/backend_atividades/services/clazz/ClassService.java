@@ -1,10 +1,10 @@
-package senai.com.backend_atividades.services.turma;
+package senai.com.backend_atividades.services.clazz;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import senai.com.backend_atividades.domain.turma.Turma;
-import senai.com.backend_atividades.domain.turma.TurmaRegisterDTO;
-import senai.com.backend_atividades.domain.turma.TurmaResponseDTO;
+import senai.com.backend_atividades.domain.turma.Class;
+import senai.com.backend_atividades.domain.turma.ClassRegisterDTO;
+import senai.com.backend_atividades.domain.turma.ClassResponseDTO;
 import senai.com.backend_atividades.exception.AlreadyExistsException;
 import senai.com.backend_atividades.exception.NotFoundException;
 import senai.com.backend_atividades.exception.NullListException;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TurmaService implements ITurmaService {
+public class ClassService implements IClassService {
 
     private final TurmaRepository turmaRepository;
 
@@ -23,50 +23,50 @@ public class TurmaService implements ITurmaService {
 
 
     @Override
-    public TurmaResponseDTO createTurma(TurmaRegisterDTO turmaRegisterDTO) {
-        return Optional.of(turmaRegisterDTO)
-                .filter(turma-> !turmaRepository.existsByNome(turmaRegisterDTO.nome()))
+    public ClassResponseDTO createTurma(ClassRegisterDTO classRegisterDTO) {
+        return Optional.of(classRegisterDTO)
+                .filter(turma-> !turmaRepository.existsByName(classRegisterDTO.nome()))
                 .map(registro->{
-                    Turma turma = new Turma();
-                    turma.setNome(turmaRegisterDTO.nome());
-                    turmaRepository.save(turma);
-                    return new TurmaResponseDTO(turma);
+                    Class clazz = new Class();
+                    clazz.setName(classRegisterDTO.nome());
+                    turmaRepository.save(clazz);
+                    return new ClassResponseDTO(clazz);
                 }).orElseThrow(()->new AlreadyExistsException("Turma ja Existente"));
 
     }
 
     @Override
-    public List<TurmaResponseDTO> getTurmas() {
+    public List<ClassResponseDTO> getTurmas() {
        return  Optional.of(turmaRepository.findAll()
                        .stream()
-                       .map(TurmaResponseDTO::new).toList())
+                       .map(ClassResponseDTO::new).toList())
                .filter(list -> !list.isEmpty())
                .orElseThrow(() -> new NullListException("Lista de Turmas esta Vazia!"));
     }
 
     @Override
-    public TurmaResponseDTO getTurmaById(Long turmaId) {
+    public ClassResponseDTO getTurmaById(Long turmaId) {
         return Optional.of(turmaId)
                 .filter(turma -> turmaRepository.existsById(turmaId))
-                .map(turma -> new TurmaResponseDTO(turmaRepository.getReferenceById(turmaId)))
+                .map(turma -> new ClassResponseDTO(turmaRepository.getReferenceById(turmaId)))
                 .orElseThrow(() -> new NotFoundException("Turma não econtrada pelo id:"+turmaId+"!"));
     }
 
     @Override
-    public TurmaResponseDTO updateTurma(String nome, Long turmaId) {
+    public ClassResponseDTO updateTurma(String nome, Long turmaId) {
 
-        Turma turma = turmaRepository.findById(turmaId)
+        Class turma = turmaRepository.findById(turmaId)
                 .orElseThrow(() -> new NotFoundException("Turma para edição não encontrada!"));
 
-        boolean existsWithSameNome = turmaRepository.existsByNomeLikeAndIdNot(nome, turmaId);
+        boolean existsWithSameNome = turmaRepository.existsByNameLikeAndIdNot(nome, turmaId);
         if (existsWithSameNome) {
             throw new AlreadyExistsException("Turma com esse Nome já existe");
         }
 
-        turma.setNome(nome);
+        turma.setName(nome);
         turmaRepository.save(turma);
 
-        return new TurmaResponseDTO(turma);
+        return new ClassResponseDTO(turma);
     }
 
     @Override

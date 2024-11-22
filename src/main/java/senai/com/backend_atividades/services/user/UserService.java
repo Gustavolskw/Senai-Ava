@@ -1,6 +1,7 @@
 package senai.com.backend_atividades.services.user;
 
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -71,17 +72,21 @@ public class UserService implements IUserService  {
 
         try {
 
-            String uniqueFileName = String.valueOf(user.getId()) + "." + FilenameUtils.getExtension(image.getOriginalFilename());
+            if (image != null) {
 
-            Path uploadPath = Path.of("src/main/resources/img/");
+                String uniqueFileName = String.valueOf(user.getId()) + "." + FilenameUtils.getExtension(image.getOriginalFilename());
 
-            Path filePath = uploadPath.resolve(uniqueFileName);
+                Path uploadPath = Path.of("src/main/resources/img/");
 
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
+                Path filePath = uploadPath.resolve(uniqueFileName);
+
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
             }
-
-            Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
         } catch (Throwable t) {
             t.printStackTrace();
