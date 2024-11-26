@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import senai.com.backend_atividades.domain.user.UserLogin;
 import senai.com.backend_atividades.response.ApiResponse;
 import senai.com.backend_atividades.response.JwtResponse;
-import senai.com.backend_atividades.security.jwt.JwtUtils;
-import senai.com.backend_atividades.security.user.AuthyUserDetails;
+import senai.com.backend_atividades.handler.requesthandler.security.jwt.JwtUtils;
+import senai.com.backend_atividades.handler.requesthandler.security.user.AuthyUserDetails;
 
 @RequiredArgsConstructor
 @RestController

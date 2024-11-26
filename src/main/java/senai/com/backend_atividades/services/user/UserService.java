@@ -1,6 +1,7 @@
 package senai.com.backend_atividades.services.user;
 
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -29,7 +30,6 @@ public class UserService implements IUserService  {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RolesRepository rolesRepository;
 
     @Override
     public UserResponseData getUserByid(Long id) {
@@ -109,13 +109,27 @@ public class UserService implements IUserService  {
 
     @Override
     public UserResponseData updateUser(User user, Long id) {
+
+        validate(user);
+
         return null;
+
+    }
+
+    @Transactional
+    public void validate(User user) {
+
+        if (StringUtils.isBlank(user.toString())) {
+
+        }
+
     }
 
     @Override
     public void deleteUser(Long id) {
 
     }
+
 
 
 }
