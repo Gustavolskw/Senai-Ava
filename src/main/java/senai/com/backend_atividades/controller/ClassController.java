@@ -3,6 +3,7 @@ package senai.com.backend_atividades.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import senai.com.backend_atividades.domain.turma.ClassRegisterDTO;
 import senai.com.backend_atividades.domain.turma.ClassResponseDTO;
@@ -21,13 +22,13 @@ public class ClassController {
 
     private final ClassService classService;
 
-
+    @Secured({"TEACHER", "ADMIN"})
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addClass(@RequestBody @Valid ClassRegisterDTO turma) {
 
         try {
 
-            ClassResponseDTO newTurma = classService.createTurma(turma);
+            ClassResponseDTO newTurma = classService.createClass(turma);
 
             return ResponseEntity.ok().body(new ApiResponse("Turma adicionada Com sucesso!", newTurma));
 
@@ -57,7 +58,7 @@ public class ClassController {
 
         try {
 
-            ClassResponseDTO updatedTurma = classService.updateTurma(turma.nome(), classId);
+            ClassResponseDTO updatedTurma = classService.updateClass(turma.name(), classId);
 
             return ResponseEntity.ok().body(new ApiResponse("Turma editado com sucesso!", updatedTurma));
 
@@ -82,7 +83,7 @@ public class ClassController {
 
     }
 
-    @GetMapping("/{turmaId}/turma")
+    @GetMapping("/{turmaId}/class")
     public ResponseEntity<ApiResponse> getTurmaById(@PathVariable Long turmaId) {
 
         try {

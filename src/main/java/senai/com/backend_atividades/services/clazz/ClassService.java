@@ -19,61 +19,75 @@ public class ClassService implements IClassService {
 
     private final TurmaRepository turmaRepository;
 
-
-
-
     @Override
-    public ClassResponseDTO createTurma(ClassRegisterDTO classRegisterDTO) {
+    public ClassResponseDTO createClass(ClassRegisterDTO classRegisterDTO) {
+
         return Optional.of(classRegisterDTO)
-                .filter(turma-> !turmaRepository.existsByName(classRegisterDTO.nome()))
-                .map(registro->{
+                .filter(turma -> !turmaRepository.existsByName(classRegisterDTO.name()))
+                .map(registro -> {
+
                     Class clazz = new Class();
-                    clazz.setName(classRegisterDTO.nome());
+
+                    clazz.setName(classRegisterDTO.name());
+
                     turmaRepository.save(clazz);
+
                     return new ClassResponseDTO(clazz);
-                }).orElseThrow(()->new AlreadyExistsException("Turma ja Existente"));
+
+                }).orElseThrow(() -> new AlreadyExistsException("Turma ja Existente"));
 
     }
 
     @Override
     public List<ClassResponseDTO> getTurmas() {
-       return  Optional.of(turmaRepository.findAll()
-                       .stream()
-                       .map(ClassResponseDTO::new).toList())
-               .filter(list -> !list.isEmpty())
-               .orElseThrow(() -> new NullListException("Lista de Turmas esta Vazia!"));
+
+        return Optional.of(turmaRepository.findAll()
+                        .stream()
+                        .map(ClassResponseDTO::new).toList())
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new NullListException("Lista de Turmas esta Vazia!"));
+
     }
 
     @Override
     public ClassResponseDTO getTurmaById(Long turmaId) {
+
         return Optional.of(turmaId)
                 .filter(turma -> turmaRepository.existsById(turmaId))
                 .map(turma -> new ClassResponseDTO(turmaRepository.getReferenceById(turmaId)))
-                .orElseThrow(() -> new NotFoundException("Turma não econtrada pelo id:"+turmaId+"!"));
+                .orElseThrow(() -> new NotFoundException("Turma não econtrada pelo id:" + turmaId + "!"));
+
     }
 
     @Override
-    public ClassResponseDTO updateTurma(String nome, Long turmaId) {
+    public ClassResponseDTO updateClass(String nome, Long turmaId) {
 
         Class turma = turmaRepository.findById(turmaId)
                 .orElseThrow(() -> new NotFoundException("Turma para edição não encontrada!"));
 
         boolean existsWithSameNome = turmaRepository.existsByNameLikeAndIdNot(nome, turmaId);
+
         if (existsWithSameNome) {
             throw new AlreadyExistsException("Turma com esse Nome já existe");
         }
 
         turma.setName(nome);
+
         turmaRepository.save(turma);
 
         return new ClassResponseDTO(turma);
+
     }
 
     @Override
     public void deleteTurma(Long turmaId) {
+
         turmaRepository.findById(turmaId)
                 .ifPresentOrElse(turmaRepository::delete,
-                        () -> { throw new NotFoundException("Turma para deletar não encontrada");
-                });
+                        () -> {
+                            throw new NotFoundException("Turma para deletar não encontrada");
+                        });
+
     }
+
 }

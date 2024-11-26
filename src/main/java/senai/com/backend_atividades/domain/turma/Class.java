@@ -2,13 +2,14 @@ package senai.com.backend_atividades.domain.turma;
 
 import jakarta.persistence.*;
 import lombok.*;
+import senai.com.backend_atividades.domain.DefaultEntity;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "class")
-public class Class {
+public class Class extends DefaultEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
