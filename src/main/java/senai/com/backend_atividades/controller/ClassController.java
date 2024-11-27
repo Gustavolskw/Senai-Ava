@@ -30,7 +30,8 @@ public class ClassController {
 
             ClassResponseDTO newTurma = classService.createClass(turma);
 
-            return ResponseEntity.ok().body(new ApiResponse("Turma adicionada Com sucesso!", newTurma));
+            return ResponseEntity.ok()
+                    .body(new ApiResponse("Turma adicionada Com sucesso!", newTurma));
 
         } catch (AlreadyExistsException e) {
             return ResponseEntity.status(409).body(new ApiResponse(e.getMessage(), null));

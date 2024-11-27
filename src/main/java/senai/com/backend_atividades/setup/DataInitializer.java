@@ -38,10 +38,7 @@ public class DataInitializer implements CommandLineRunner {
             createRoles();
             createUser();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        } catch (Exception e) {}
 
     }
 
@@ -51,7 +48,11 @@ public class DataInitializer implements CommandLineRunner {
         List<Role> defaultRoles = buildDefaultRoles();
 
         defaultRoles.stream().forEach(role -> {
-            rolesRepository.save(role);
+
+            if (!existsRole(role.getName())) {
+                rolesRepository.save(role);
+            }
+
         });
 
     }
@@ -78,6 +79,10 @@ public class DataInitializer implements CommandLineRunner {
                 null,
                 rolesRepository.findById(Long.valueOf(1)).get(),
                 null);
+    }
+
+    public Boolean existsRole(String roleStr) {
+        return !rolesRepository.findByName(roleStr).isEmpty();
     }
 
 }

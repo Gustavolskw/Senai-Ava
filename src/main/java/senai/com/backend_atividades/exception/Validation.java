@@ -11,11 +11,23 @@ public class Validation extends RuntimeException {
     public Map<String, String> validations = new HashMap<>();
 
     public Validation() {
-        super("Validations Ocurred");
+        super("Validations Occurred");
     }
 
-    public void add(String field, String message) {
+    public Validation add(String field, String message) {
+
         validations.put(field, message);
+
+        return this;
+
+    }
+
+    public void throwIfHasErrors() {
+
+        if (!validations.isEmpty()) {
+            throw this;
+        }
+
     }
 
 }

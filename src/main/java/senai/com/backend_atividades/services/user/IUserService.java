@@ -17,7 +17,7 @@ public interface IUserService {
 
     UserResponseData createUser(UserRegisterDTO user);
 
-    UserResponseData updateUser(User user, Long id);
+    UserResponseData updateUser(UserRegisterDTO user, Long id);
 
     void deleteUser(Long id);
 

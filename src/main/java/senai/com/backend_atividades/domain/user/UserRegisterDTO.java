@@ -1,31 +1,32 @@
 package senai.com.backend_atividades.domain.user;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 import senai.com.backend_atividades.domain.Role.Role;
 
-public record UserRegisterDTO(
+@Data
+public class UserRegisterDTO {
 
-        String name,
-        String email,
-        String password,
-        String cpf,
-        String nameImage,
-        Role role,
-        MultipartFile image
-        ) {
+    private String name;
+    private String email;
+    private String password;
+    private String cpf;
+    private String nameImage;
+    private Role role;
+    private MultipartFile image;
+    private Long roleId;
 
-    public UserRegisterDTO(UserRegisterDTO userRegisterDTO, Role role, MultipartFile multipartFile) {
+    public UserRegisterDTO() {
+    }
 
-        this(userRegisterDTO.name(),
-             userRegisterDTO.email(),
-             userRegisterDTO.password(),
-             userRegisterDTO.cpf(),
-             userRegisterDTO.nameImage(),
-             role,
-             multipartFile);
-
+    public UserRegisterDTO(String name, String email, String password, String cpf, String nameImage, Role role, MultipartFile image) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.cpf = cpf;
+        this.nameImage = nameImage;
+        this.role = role;
+        this.image = image;
     }
 
 }
