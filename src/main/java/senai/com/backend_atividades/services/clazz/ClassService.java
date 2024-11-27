@@ -1,5 +1,6 @@
 package senai.com.backend_atividades.services.clazz;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import senai.com.backend_atividades.domain.turma.Class;
@@ -29,6 +30,9 @@ public class ClassService implements IClassService {
                     Class clazz = new Class();
 
                     clazz.setName(classRegisterDTO.name());
+                    clazz.setStartDate(classRegisterDTO.startDate());
+                    clazz.setFinalDate(classRegisterDTO.finalDate());
+                    clazz.setImgClass(classRegisterDTO.imgClass());
 
                     turmaRepository.save(clazz);
 
@@ -60,22 +64,26 @@ public class ClassService implements IClassService {
     }
 
     @Override
-    public ClassResponseDTO updateClass(String nome, Long turmaId) {
+    @Transactional
+    public ClassResponseDTO updateClass(ClassRegisterDTO clazzEdit, Long turmaId) {
 
-        Class turma = turmaRepository.findById(turmaId)
+        Class clazz = turmaRepository.findById(turmaId)
                 .orElseThrow(() -> new NotFoundException("Turma para edição não encontrada!"));
 
-        boolean existsWithSameNome = turmaRepository.existsByNameLikeAndIdNot(nome, turmaId);
+        boolean existsWithSameNome = turmaRepository.existsByNameLikeAndIdNot(clazzEdit.name(), turmaId);
 
         if (existsWithSameNome) {
             throw new AlreadyExistsException("Turma com esse Nome já existe");
         }
 
-        turma.setName(nome);
+        clazz.setName(clazzEdit.name());
+        clazz.setStartDate(clazzEdit.startDate());
+        clazz.setFinalDate(clazzEdit.finalDate());
+        clazz.setImgClass(clazzEdit.imgClass());
 
-        turmaRepository.save(turma);
+        turmaRepository.save(clazz);
 
-        return new ClassResponseDTO(turma);
+        return new ClassResponseDTO(clazz);
 
     }
 

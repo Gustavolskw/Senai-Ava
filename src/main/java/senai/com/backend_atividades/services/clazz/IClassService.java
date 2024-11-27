@@ -10,6 +10,6 @@ public interface IClassService {
     ClassResponseDTO createClass(ClassRegisterDTO classRegisterDTO);
     List<ClassResponseDTO> getTurmas();
     ClassResponseDTO getTurmaById(Long turmaId);
-    ClassResponseDTO updateClass(String nome, Long turmaId);
+    ClassResponseDTO updateClass(ClassRegisterDTO clazz, Long turmaId);
     void deleteTurma(Long turmaId);
 }

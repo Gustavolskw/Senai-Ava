@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import senai.com.backend_atividades.domain.DefaultEntity;
 
+import java.time.LocalDate;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -17,5 +19,14 @@ public class Class extends DefaultEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
+
+    @Column(name = "final_date", nullable = false)
+    private LocalDate finalDate;
+
+    @Column(name = "img_class")
+    private String imgClass;
 
 }

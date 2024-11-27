@@ -59,7 +59,7 @@ public class ClassController {
 
         try {
 
-            ClassResponseDTO updatedTurma = classService.updateClass(turma.name(), classId);
+            ClassResponseDTO updatedTurma = classService.updateClass(turma, classId);
 
             return ResponseEntity.ok().body(new ApiResponse("Turma editado com sucesso!", updatedTurma));
 
@@ -84,7 +84,7 @@ public class ClassController {
 
     }
 
-    @GetMapping("/{turmaId}/class")
+    @GetMapping("/{classId}/class")
     public ResponseEntity<ApiResponse> getTurmaById(@PathVariable Long turmaId) {
 
         try {
