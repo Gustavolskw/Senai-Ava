@@ -1,4 +1,4 @@
-package senai.com.backend_atividades.security.jwt;
+package senai.com.backend_atividades.handler.requesthandler.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import senai.com.backend_atividades.response.ApiResponse;
-import senai.com.backend_atividades.security.user.AuthyUserDetailsService;
+import senai.com.backend_atividades.handler.requesthandler.security.user.AuthyUserDetailsService;
 
 import java.io.IOException;
 

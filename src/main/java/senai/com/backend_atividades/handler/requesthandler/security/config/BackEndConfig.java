@@ -1,4 +1,4 @@
-package senai.com.backend_atividades.security.config;
+package senai.com.backend_atividades.handler.requesthandler.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,9 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import senai.com.backend_atividades.security.jwt.AuthTokenFilter;
-import senai.com.backend_atividades.security.jwt.JwtAuthEntryPoint;
-import senai.com.backend_atividades.security.user.AuthyUserDetailsService;
+import senai.com.backend_atividades.handler.requesthandler.security.jwt.AuthTokenFilter;
+import senai.com.backend_atividades.handler.requesthandler.security.jwt.JwtAuthEntryPoint;
+import senai.com.backend_atividades.handler.requesthandler.security.user.AuthyUserDetailsService;
 
 import java.util.List;
 

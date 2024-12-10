@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import senai.com.backend_atividades.domain.DefaultEntity;
 import senai.com.backend_atividades.domain.Role.Role;
 
 
@@ -19,11 +20,7 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends DefaultEntity {
 
     @Column(name = "name")
     private String name;
@@ -49,7 +46,7 @@ public class User {
 
     @PrePersist
     @PreUpdate
-    private void prePersist() {
+    public void setOptions() {
 
         if (this.getRole() != null) {
             this.roleId = this.role.getId();

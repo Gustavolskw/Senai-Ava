@@ -1,4 +1,4 @@
-package senai.com.backend_atividades.security.jwt;
+package senai.com.backend_atividades.handler.requesthandler.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

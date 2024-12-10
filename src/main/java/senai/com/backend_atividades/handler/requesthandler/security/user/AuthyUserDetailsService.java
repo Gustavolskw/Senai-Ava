@@ -1,4 +1,4 @@
-package senai.com.backend_atividades.security.user;
+package senai.com.backend_atividades.handler.requesthandler.security.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

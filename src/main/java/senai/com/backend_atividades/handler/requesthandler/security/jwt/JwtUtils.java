@@ -1,4 +1,4 @@
-package senai.com.backend_atividades.security.jwt;
+package senai.com.backend_atividades.handler.requesthandler.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import senai.com.backend_atividades.security.user.AuthyUserDetails;
+import senai.com.backend_atividades.handler.requesthandler.security.user.AuthyUserDetails;
 
 import java.security.Key;
 import java.util.Date;

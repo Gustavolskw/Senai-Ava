@@ -14,6 +14,7 @@ import senai.com.backend_atividades.domain.user.UserResponseData;
 import senai.com.backend_atividades.exception.UserAlreadyExistsException;
 import senai.com.backend_atividades.exception.UserNotFoundException;
 import senai.com.backend_atividades.repository.RolesRepository;
+import senai.com.backend_atividades.repository.UserRepository;
 import senai.com.backend_atividades.response.ApiResponse;
 import senai.com.backend_atividades.services.user.IUserService;
 
@@ -24,6 +25,7 @@ public class UserController {
 
     private final IUserService iUserService;
     private final RolesRepository rolesRepository;
+    private final UserRepository userRepository;
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable @Valid Long id) {
@@ -48,9 +50,10 @@ public class UserController {
 
         try {
 
-            UserRegisterDTO userRegisterDTO = new UserRegisterDTO(new Gson().fromJson(user, UserRegisterDTO.class),
-                    rolesRepository.findById(role.getValue()).get(),
-                    image);
+            UserRegisterDTO userRegisterDTO = new Gson().fromJson(user, UserRegisterDTO.class);
+
+            userRegisterDTO.setRole(rolesRepository.findById(role.getValue()).get());
+            userRegisterDTO.setImage(image);
 
             iUserService.createUser(userRegisterDTO);
 
@@ -62,5 +65,34 @@ public class UserController {
 
     }
 
+    @Secured({"ADMIN", "TEACHER"})
+    @PutMapping("update/{userId}")
+    public ResponseEntity<ApiResponse> addUser(@PathVariable("userId") Long userId,
+                                               @Valid @RequestParam String user,
+                                               @RequestParam("image") MultipartFile image) {
+
+        try {
+
+            UserRegisterDTO userRegisterDTO = new Gson().fromJson(user, UserRegisterDTO.class);
+
+            Role role = rolesRepository.findById(userRegisterDTO.getRoleId()).get();
+
+            userRegisterDTO.setImage(image);
+            userRegisterDTO.setRole(role);
+
+            iUserService.updateUser(userRegisterDTO, userId);
+
+            return ResponseEntity.ok().body(new ApiResponse(role.getName() + " Editado com sucesso!", null));
+
+        } catch (UserAlreadyExistsException e) {
+            return ResponseEntity.status(409).body(new ApiResponse(e.getMessage(), null));
+        }
+
+    }
+
+    @GetMapping("/list-all")
+    public ResponseEntity<ApiResponse> listAll() {
+        return ResponseEntity.ok().body(new ApiResponse("Usuários", userRepository.findAll()));
+    }
 
 }
